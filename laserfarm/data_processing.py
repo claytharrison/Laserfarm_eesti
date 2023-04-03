@@ -146,7 +146,7 @@ class DataProcessing(PipelineRemoteData):
             filter = _get_attribute(self.filter, 'select_main_flight')
             logger.info('Thinning point-cloud data to main flightline')
             self.point_cloud = filter(self.point_cloud)
-            return self
+        return self
 
 
     def export_point_cloud(self, filename='', attributes='all', **export_opts):
