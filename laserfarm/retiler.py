@@ -146,6 +146,12 @@ def _run_PDAL_splitter(filename, tiled_temp_folder, tiling_mins, tiling_maxs,
         "pipeline": [
             filename.as_posix(),
             {
+                "type": "filters.relaxationdartthrowing",
+                "radius": "{}".format(1.2), #best 1.2
+                "count": "{}".format(1000000), #best 1000000
+                "decay": "{}".format(0.9),#best 0.9
+            },
+            {
                 "type": "filters.splitter",
                 "origin_x": "{}".format(tiling_mins[0]),
                 "origin_y": "{}".format(tiling_mins[1]),
