@@ -10,7 +10,7 @@ from laserchicken.feature_extractor.base_feature_extractor import \
     FeatureExtractor
 from laserchicken.feature_extractor.feature_extraction import \
     list_feature_names
-from laserchicken.filter import select_above, select_main_flight, select_below, select_equal, \
+from laserchicken.filter import select_above, select_below, select_equal, \
     select_polygon
 from laserchicken.io import io_handlers
 from laserchicken.kd_tree import initialize_cache
@@ -34,7 +34,6 @@ class DataProcessing(PipelineRemoteData):
                          'add_custom_features',
                          'load',
                          'normalize',
-                         'remove_overlap',
                          'apply_filter',
                          'export_point_cloud',
                          'generate_targets',
@@ -46,7 +45,6 @@ class DataProcessing(PipelineRemoteData):
         self.grid = Grid()
         self.filter = DictToObj({f.__name__: f
                                  for f in [select_above,
-                                           select_main_flight,
                                            select_below,
                                            select_equal,
                                            select_polygon]})
@@ -139,15 +137,6 @@ class DataProcessing(PipelineRemoteData):
         logger.info('Filtering point-cloud data')
         self.point_cloud = filter(self.point_cloud, **filter_input)
         return self
-    
-    def remove_overlap(self, switch=False):
-        if switch == True:
-            _check_point_cloud_is_not_empty(self.point_cloud)
-            filter = _get_attribute(self.filter, 'select_main_flight')
-            logger.info('Thinning point-cloud data to main flightline')
-            self.point_cloud = filter(self.point_cloud)
-        return self
-
 
     def export_point_cloud(self, filename='', attributes='all', **export_opts):
         """

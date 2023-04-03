@@ -146,12 +146,6 @@ def _run_PDAL_splitter(filename, tiled_temp_folder, tiling_mins, tiling_maxs,
         "pipeline": [
             filename.as_posix(),
             {
-                "type": "filters.relaxationdartthrowing",
-                "radius": "{}".format(4), #best 1.2
-                "count": "{}".format(1000000), #best 1000000
-                "decay": "{}".format(0.9),#best 0.9
-            },
-            {
                 "type": "filters.splitter",
                 "origin_x": "{}".format(tiling_mins[0]),
                 "origin_y": "{}".format(tiling_mins[1]),
@@ -160,8 +154,8 @@ def _run_PDAL_splitter(filename, tiled_temp_folder, tiling_mins, tiling_maxs,
             {
                 "type": "writers.las",
                 "filename": outfilepath.as_posix(),
-                "forward": "all", # added to make sure Amplitude and other attributes pass but actually might only need the next line
-                "extra_dims": "all", # added to make sure Amplitude and other attributes pass
+                "forward": "all",
+                "extra_dims": "all",
                 "offset_x": "auto",
                 "offset_y": "auto",
                 "offset_z": "auto"
